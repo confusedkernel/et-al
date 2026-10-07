@@ -1,0 +1,12 @@
+{$DOMAIN::80} {
+	encode gzip
+	handle /api/* {
+		reverse_proxy api:8000 {
+			# Keep SSE streams unbuffered.
+			flush_interval -1
+		}
+	}
+	handle {
+		reverse_proxy web:3000
+	}
+}
